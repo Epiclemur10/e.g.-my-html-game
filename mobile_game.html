@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Click Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #gameCanvas {
+            background-color: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let score = 0;
+
+        function drawBox() {
+            const x = Math.random() * (canvas.width - 50);
+            const y = Math.random() * (canvas.height - 50);
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(x, y, 50, 50);
+        }
+
+        function handleClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+
+            if (pixel[0] === 0 && pixel[1] === 0 && pixel[2] === 255) {
+                score++;
+                console.log('Score:', score);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawBox();
+            }
+        }
+
+        canvas.addEventListener('click', handleClick);
+        drawBox();
+    </script>
+</body>
+</html>
